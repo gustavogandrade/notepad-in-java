@@ -1,6 +1,6 @@
 # Notepad in Java
 
-A lightweight desktop notepad/text editor built with Java Swing and AWT, inspired by the classic Windows Notepad.
+A lightweight desktop notepad/text editor built with Java Swing and AWT still in development.
 
 ## Features
 
