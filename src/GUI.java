@@ -101,15 +101,16 @@ public class GUI {
 
 
     public void createShortcuts(){
-        newDoc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK));
-        save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK));
-        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,InputEvent.CTRL_DOWN_MASK));
+        newDoc.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK).getKeyChar());
 
-        copy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,InputEvent.CTRL_DOWN_MASK));
-        paste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,InputEvent.CTRL_DOWN_MASK));
-        cut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,InputEvent.CTRL_DOWN_MASK));
-        selectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,InputEvent.CTRL_DOWN_MASK));
+        open.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        save.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        exit.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+
+        copy.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_C,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        paste.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_V,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        cut.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_X,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        selectAll.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_A,InputEvent.CTRL_DOWN_MASK).getKeyChar());
 
     }
 }
