@@ -9,6 +9,10 @@ A lightweight desktop notepad/text editor built with Java Swing and AWT still in
 - Clean and minimal GUI built with Java Swing
 - Familiar menu-driven interface
 
+
+  <img width="240" height="270" alt="image" src="https://github.com/user-attachments/assets/14669500-fc5c-4edc-9f9d-29b3360d2494" />
+
+
 ## Requirements
 
 - Java JDK 8 or higher
