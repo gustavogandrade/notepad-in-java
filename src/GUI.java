@@ -5,16 +5,17 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.net.URL;
 
-public class GUI {
+
+public class GUI extends JFrame implements ActionListener {
     JFrame window;
     JTextArea textArea;
     JScrollPane scrollPane;
 
-    JMenu file,newDoc,open,save,print,exit;
-    JMenu edit,copy,paste,cut,selectAll;
-    JMenu format,fontFamily,fontStyle,fontSize;
+    JMenuItem file, newDoc, open, save, print, exit;
+    JMenuItem edit, copy, paste, cut, selectAll;
+    JMenuItem format, fontFamily, fontStyle, fontSize;
 
-    static void main(String[] args){
+    static void main(String[] args) {
         new GUI();
     }
 
@@ -24,6 +25,7 @@ public class GUI {
         createTextArea();
         createMenuBar();
         createShortcuts();
+        addActionEvents();
 
         window.setVisible(true);
     }
@@ -31,13 +33,13 @@ public class GUI {
 
     public void createWindow() {
         window = new JFrame("Notepad");
-        window.setSize(670,670);
+        window.setSize(670, 670);
 
         URL iconURL = getClass().getClassLoader().getResource("notepad-icon.png");
         assert iconURL != null;
         ImageIcon image = new ImageIcon(iconURL);
-            window.setIconImage(image.getImage());
-            System.out.println("Warning: notepad-icon.png not found in resources!");
+        window.setIconImage(image.getImage());
+        System.out.println("Warning: notepad-icon.png not found in resources!");
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -45,6 +47,7 @@ public class GUI {
 
     public void createTextArea() {
         textArea = new JTextArea();
+        textArea.setFont(new Font("SAN_SERIF", Font.PLAIN, 20));
         window.add(textArea);
 
         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -54,29 +57,29 @@ public class GUI {
     }
 
 
-    public void createMenuBar(){
+    public void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         file = new JMenu("File");
 
-        newDoc = new JMenu("New");
-        open = new JMenu("Open");
-        save = new JMenu("Save");
-        print = new JMenu("Print");
-        exit = new JMenu("Exit");
+        newDoc = new JMenuItem("New");
+        open = new JMenuItem("Open");
+        save = new JMenuItem("Save");
+        print = new JMenuItem("Print");
+        exit = new JMenuItem("Exit");
 
         edit = new JMenu("Edit");
 
-        copy = new JMenu("Copy");
-        paste = new JMenu("Paste");
-        cut = new JMenu("Cut");
-        selectAll = new JMenu("Select All");
+        copy = new JMenuItem("Copy");
+        paste = new JMenuItem("Paste");
+        cut = new JMenuItem("Cut");
+        selectAll = new JMenuItem("Select All");
 
         format = new JMenu("Format");
 
-        fontFamily = new JMenu("Font Family");
-        fontStyle = new JMenu("Font Style");
-        fontSize = new JMenu("Font Size");
+        fontFamily = new JMenuItem("Font Family");
+        fontStyle = new JMenuItem("Font Style");
+        fontSize = new JMenuItem("Font Size");
 
         window.setJMenuBar(menuBar);
         menuBar.add(file);
@@ -100,17 +103,79 @@ public class GUI {
     }
 
 
-    public void createShortcuts(){
+    public void createShortcuts() {
         newDoc.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK).getKeyChar());
 
-        open.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK).getKeyChar());
-        save.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK).getKeyChar());
-        exit.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        open.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        save.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        exit.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.CTRL_DOWN_MASK).getKeyChar());
 
-        copy.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_C,InputEvent.CTRL_DOWN_MASK).getKeyChar());
-        paste.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_V,InputEvent.CTRL_DOWN_MASK).getKeyChar());
-        cut.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_X,InputEvent.CTRL_DOWN_MASK).getKeyChar());
-        selectAll.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_A,InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        copy.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        paste.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        cut.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        selectAll.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+
+    }
+
+    public void addActionEvents() {
+        newDoc.addActionListener(this);
+        save.addActionListener(this);
+        print.addActionListener(this);
+        exit.addActionListener(this);
+        copy.addActionListener(this);
+        paste.addActionListener(this);
+        cut.addActionListener(this);
+        selectAll.addActionListener(this);
+        open.addActionListener(this);
+        fontFamily.addActionListener(this);
+        fontSize.addActionListener(this);
+        fontStyle.addActionListener(this);
+    }
+
+
+    public void actionPerformed(ActionEvent ae) {
+
+        if (ae.getActionCommand().equals("New")) {
+            textArea.setText("");
+        }
+
+        else if (ae.getActionCommand().equals("Open")){
+            JFileChooser chooser = new JFileChooser("C:/");
+            chooser.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter restrict = new FileNameExtensionFilter("Only  .txt files", "txt");
+            chooser.addChoosableFileFilter(restrict);
+
+            int result = chooser.showOpenDialog(window);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = chooser.getSelectedFile();
+
+                try {
+                    FileReader reader = new FileReader(file);
+                    BufferedReader br = new BufferedReader(reader);
+                    textArea.read(br, null);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }
+
+        else if (ae.getActionCommand().equals("Save")) {
+            final JFileChooser SaveAs = new JFileChooser();
+            SaveAs.setApproveButtonText("Save");
+            int actionDialog = SaveAs.showOpenDialog(window);
+            if (actionDialog != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            File fileName = new File(SaveAs.getSelectedFile() + ".txt");
+            BufferedWriter outFile = null;
+            try {
+                outFile = new BufferedWriter(new FileWriter(fileName));
+                textArea.write(outFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 }
