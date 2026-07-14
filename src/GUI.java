@@ -10,10 +10,12 @@ public class GUI extends JFrame implements ActionListener {
     JFrame window;
     JTextArea textArea;
     JScrollPane scrollPane;
+    String text;
 
     JMenuItem file, newDoc, open, save, print, exit;
     JMenuItem edit, copy, paste, cut, selectAll;
     JMenuItem format, fontFamily, fontStyle, fontSize;
+    private Object fontFamilyList;
 
     static void main(String[] args) {
         new GUI();
@@ -175,6 +177,40 @@ public class GUI extends JFrame implements ActionListener {
                 e.printStackTrace();
             }
         }
+
+        else if (ae.getActionCommand().equals("Print")) {
+            try {
+                textArea.print();
+            } catch (Exception e) {}
+        }
+
+        else if (ae.getActionCommand().equals("Exit")){
+            window.dispose();
+        }
+
+        else if (ae.getActionCommand().equals("Copy")){
+            text = textArea.getSelectedText();
+        }
+
+        else if (ae.getActionCommand().equals("Paste")){
+            textArea.insert(text,textArea.getCaretPosition());
+        }
+
+        else if (ae.getActionCommand().equals("Cut")){
+            text = textArea.getSelectedText();
+            textArea.replaceRange("", textArea.getSelectionStart(), textArea.getSelectionEnd());
+        }
+
+        else if (ae.getActionCommand().equals("Select All")){
+            textArea.selectAll();
+        }
+
+//        else if (ae.getActionCommand().equals("Font Family")){
+//            JOptionPane.showConfirmDialog(null,fontFamilyList, "Choose Font Family", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+//            fontFamily = String.valueOf(fontFamilyList.getSelectedValue());
+//            newFont = new Font(fontFamily,fontStyle, fontSize);
+//            textArea.setFont(newFont);
+//        }
 
 
     }
