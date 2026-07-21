@@ -8,10 +8,13 @@ A lightweight desktop notepad/text editor built with Java Swing and AWT still in
 - Standard text editing — cut, copy, paste, undo/redo
 - Clean and minimal GUI built with Java Swing
 - Familiar menu-driven interface
+- Light and dark themes
 
 
 
   <img width="520" height="480" alt="image" src="https://github.com/user-attachments/assets/7b9b873b-19d7-4557-97b1-1a00e35f2dcf" />
+  <img width="520" height="480" alt="image" src="https://github.com/user-attachments/assets/9ca1571b-f256-44be-a746-2e4a5f88cbff" />
+
 
 
 
