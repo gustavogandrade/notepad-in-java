@@ -26,7 +26,7 @@ public class GUI extends JFrame implements ActionListener {
 
     String currentFontFamily = "SansSerif";
     int currentFontStyle = Font.PLAIN;
-    int currentFontSize = 12;
+    int currentFontSize = 20;
 
     static void main(String[] args) {
         new GUI();
@@ -60,7 +60,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public void createTextArea() {
         textArea = new JTextArea();
-        textArea.setFont(new Font("SAN_SERIF", Font.PLAIN, 20));
+        textArea.setFont(new Font(currentFontFamily, currentFontStyle, currentFontSize));
         window.add(textArea);
 
         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
