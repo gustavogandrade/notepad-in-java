@@ -15,6 +15,7 @@ public class GUI extends JFrame implements ActionListener {
     JMenuItem file, newDoc, open, save, print, exit;
     JMenuItem edit, copy, paste, cut, selectAll;
     JMenuItem format, fontFamily, fontStyle, fontSize;
+    JMenuItem view, changeTheme;
 
     String[] fontFamilyValues = {"SansSerif", "Serif", "Monospaced", "Dialog", "Arial"};
     String[] fontStyleValues = {"Plain", "Bold", "Italic"};
@@ -23,6 +24,16 @@ public class GUI extends JFrame implements ActionListener {
     JList<String> familyList = new JList<>(fontFamilyValues);
     JList<String> styleList = new JList<>(fontStyleValues);
     JList<String> sizeList = new JList<>(fontSizeValues);
+
+
+    Color darkBg = new Color(0x1E, 0x1E, 0x1E);
+    Color darkFg = new Color(0xD4, 0xD4, 0xD4);
+    Color darkSelectionColor = new Color(0x26, 0x4F, 0x78);
+
+    Color lightBg = Color.WHITE;
+    Color lightFg = Color.BLACK;
+    Color lightSelectionColor = new Color(0xA6, 0xD2, 0xFF);
+
 
     String currentFontFamily = "SansSerif";
     int currentFontStyle = Font.PLAIN;
@@ -61,6 +72,7 @@ public class GUI extends JFrame implements ActionListener {
     public void createTextArea() {
         textArea = new JTextArea();
         textArea.setFont(new Font(currentFontFamily, currentFontStyle, currentFontSize));
+        textArea.setBackground(lightBg);
         window.add(textArea);
 
         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -94,10 +106,15 @@ public class GUI extends JFrame implements ActionListener {
         fontStyle = new JMenuItem("Font Style");
         fontSize = new JMenuItem("Font Size");
 
+        view = new JMenu("View");
+
+        changeTheme = new JMenuItem("Change Theme");
+
         window.setJMenuBar(menuBar);
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(format);
+        menuBar.add(view);
 
         file.add(newDoc);
         file.add(open);
@@ -113,6 +130,8 @@ public class GUI extends JFrame implements ActionListener {
         format.add(fontFamily);
         format.add(fontStyle);
         format.add(fontSize);
+
+        view.add(changeTheme);
     }
 
 
@@ -127,6 +146,7 @@ public class GUI extends JFrame implements ActionListener {
         paste.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK).getKeyChar());
         cut.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK).getKeyChar());
         selectAll.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        changeTheme.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK).getKeyChar());
 
     }
 
@@ -143,6 +163,8 @@ public class GUI extends JFrame implements ActionListener {
         fontFamily.addActionListener(this);
         fontSize.addActionListener(this);
         fontStyle.addActionListener(this);
+        changeTheme.addActionListener(this);
+
     }
 
 
@@ -246,6 +268,26 @@ public class GUI extends JFrame implements ActionListener {
                 currentFontSize = Integer.parseInt(sizeList.getSelectedValue());
                 textArea.setFont(new Font(currentFontFamily, currentFontStyle, currentFontSize));
             }
+        }
+
+
+        else if (ae.getActionCommand().equals("Change Theme")) {
+            if (textArea.getBackground() == lightBg){
+                textArea.setBackground(darkBg);
+                textArea.setForeground(darkFg);
+                textArea.setCaretColor(Color.WHITE);
+                textArea.setSelectionColor(darkSelectionColor);
+
+                scrollPane.getViewport().setBackground(darkBg);
+            } else {
+                textArea.setBackground(lightBg);
+                textArea.setForeground(lightFg);
+                textArea.setCaretColor(Color.BLACK);
+                textArea.setSelectionColor(lightSelectionColor);
+
+                scrollPane.getViewport().setBackground(lightBg);
+            }
+
         }
     }
 }
