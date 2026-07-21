@@ -15,7 +15,18 @@ public class GUI extends JFrame implements ActionListener {
     JMenuItem file, newDoc, open, save, print, exit;
     JMenuItem edit, copy, paste, cut, selectAll;
     JMenuItem format, fontFamily, fontStyle, fontSize;
-    private Object fontFamilyList;
+
+    String[] fontFamilyValues = {"SansSerif", "Serif", "Monospaced", "Dialog", "Arial"};
+    String[] fontStyleValues = {"Plain", "Bold", "Italic"};
+    String[] fontSizeValues = {"8","12", "14", "16", "18", "20", "24", "28", "32", "36", "40"};
+
+    JList<String> familyList = new JList<>(fontFamilyValues);
+    JList<String> styleList = new JList<>(fontStyleValues);
+    JList<String> sizeList = new JList<>(fontSizeValues);
+
+    String currentFontFamily = "SansSerif";
+    int currentFontStyle = Font.PLAIN;
+    int currentFontSize = 12;
 
     static void main(String[] args) {
         new GUI();
@@ -178,6 +189,7 @@ public class GUI extends JFrame implements ActionListener {
             }
         }
 
+
         else if (ae.getActionCommand().equals("Print")) {
             try {
                 textArea.print();
@@ -205,13 +217,36 @@ public class GUI extends JFrame implements ActionListener {
             textArea.selectAll();
         }
 
-//        else if (ae.getActionCommand().equals("Font Family")){
-//            JOptionPane.showConfirmDialog(null,fontFamilyList, "Choose Font Family", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-//            fontFamily = String.valueOf(fontFamilyList.getSelectedValue());
-//            newFont = new Font(fontFamily,fontStyle, fontSize);
-//            textArea.setFont(newFont);
-//        }
 
 
+        else if (ae.getActionCommand().equals("Font Family")){
+            int response = JOptionPane.showConfirmDialog(window, new JScrollPane(familyList), "Choose Font Family", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (response == JOptionPane.OK_OPTION && familyList.getSelectedValue() != null) {
+                currentFontFamily = familyList.getSelectedValue();
+                textArea.setFont(new Font(currentFontFamily, currentFontStyle, currentFontSize));
+            }
+        }
+        else if (ae.getActionCommand().equals("Font Style")) {
+            int response = JOptionPane.showConfirmDialog(window, new JScrollPane(styleList), "Choose Font Style", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (response == JOptionPane.OK_OPTION && styleList.getSelectedValue() != null) {
+                String styleStr = styleList.getSelectedValue();
+                if (styleStr.equals("Bold")) {
+                    currentFontStyle = Font.BOLD;
+                } else if (styleStr.equals("Italic")) {
+                    currentFontStyle = Font.ITALIC;
+                } else {
+                    currentFontStyle = Font.PLAIN;
+                }
+                textArea.setFont(new Font(currentFontFamily, currentFontStyle, currentFontSize));
+            }
+        }
+        else if (ae.getActionCommand().equals("Font Size")) {
+            int response = JOptionPane.showConfirmDialog(window, new JScrollPane(sizeList), "Choose Font Size", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (response == JOptionPane.OK_OPTION && sizeList.getSelectedValue() != null) {
+                currentFontSize = Integer.parseInt(sizeList.getSelectedValue());
+                textArea.setFont(new Font(currentFontFamily, currentFontStyle, currentFontSize));
+            }
+        }
     }
 }
+
