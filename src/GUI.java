@@ -15,7 +15,9 @@ public class GUI extends JFrame implements ActionListener {
     JMenuItem file, newDoc, open, save, print, exit;
     JMenuItem edit, copy, paste, cut, selectAll;
     JMenuItem format, fontFamily, fontStyle, fontSize;
-    JMenuItem view, changeTheme;
+    JMenu view, changeTheme;
+    JRadioButtonMenuItem lightTheme, darkTheme, vintageTheme;
+    JMenuBar menuBar;
 
     String[] fontFamilyValues = {"SansSerif", "Serif", "Monospaced", "Dialog", "Arial"};
     String[] fontStyleValues = {"Plain", "Bold", "Italic"};
@@ -33,6 +35,12 @@ public class GUI extends JFrame implements ActionListener {
     Color lightBg = Color.WHITE;
     Color lightFg = Color.BLACK;
     Color lightSelectionColor = new Color(0xA6, 0xD2, 0xFF);
+
+    Color vintageBg = new Color(0xF5, 0xF1, 0xE8);
+    Color vintageFg = new Color(0x3E, 0x32, 0x26);
+    Color vintageSelectionColor = new Color(0xD8, 0xC4, 0xA8);
+    Color vintageTab = new Color(0x8B, 0x5A, 0x2B);
+    int currentTheme = 0;
 
 
     String currentFontFamily = "SansSerif";
@@ -83,7 +91,7 @@ public class GUI extends JFrame implements ActionListener {
 
 
     public void createMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
+        menuBar = new JMenuBar();
 
         file = new JMenu("File");
 
@@ -108,7 +116,17 @@ public class GUI extends JFrame implements ActionListener {
 
         view = new JMenu("View");
 
-        changeTheme = new JMenuItem("Change Theme");
+        changeTheme = new JMenu("Change Theme");
+        lightTheme = new JRadioButtonMenuItem("Light", true);
+        darkTheme = new JRadioButtonMenuItem("Dark");
+        vintageTheme = new JRadioButtonMenuItem("Vintage");
+        ButtonGroup themeGroup = new ButtonGroup();
+        themeGroup.add(lightTheme);
+        themeGroup.add(darkTheme);
+        themeGroup.add(vintageTheme);
+        changeTheme.add(lightTheme);
+        changeTheme.add(darkTheme);
+        changeTheme.add(vintageTheme);
 
         window.setJMenuBar(menuBar);
         menuBar.add(file);
@@ -146,7 +164,7 @@ public class GUI extends JFrame implements ActionListener {
         paste.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK).getKeyChar());
         cut.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK).getKeyChar());
         selectAll.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK).getKeyChar());
-        changeTheme.setMnemonic(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK).getKeyChar());
+        changeTheme.setMnemonic('T');
 
     }
 
@@ -163,7 +181,9 @@ public class GUI extends JFrame implements ActionListener {
         fontFamily.addActionListener(this);
         fontSize.addActionListener(this);
         fontStyle.addActionListener(this);
-        changeTheme.addActionListener(this);
+        lightTheme.addActionListener(this);
+        darkTheme.addActionListener(this);
+        vintageTheme.addActionListener(this);
 
     }
 
@@ -271,24 +291,56 @@ public class GUI extends JFrame implements ActionListener {
         }
 
 
-        else if (ae.getActionCommand().equals("Change Theme")) {
-            if (textArea.getBackground() == lightBg){
-                textArea.setBackground(darkBg);
-                textArea.setForeground(darkFg);
-                textArea.setCaretColor(Color.WHITE);
-                textArea.setSelectionColor(darkSelectionColor);
+        else if (ae.getActionCommand().equals("Light")) {
+            currentTheme = 0;
+            applyTheme();
+        }
+        else if (ae.getActionCommand().equals("Dark")) {
+            currentTheme = 1;
+            applyTheme();
+        }
+        else if (ae.getActionCommand().equals("Vintage")) {
+            currentTheme = 2;
+            applyTheme();
+        }
+    }
 
-                scrollPane.getViewport().setBackground(darkBg);
-            } else {
-                textArea.setBackground(lightBg);
-                textArea.setForeground(lightFg);
-                textArea.setCaretColor(Color.BLACK);
-                textArea.setSelectionColor(lightSelectionColor);
+    private void applyTheme() {
+        Color background;
+        Color foreground;
+        Color selection;
+        Color tabBackground = UIManager.getColor("MenuBar.background");
+        Color tabForeground = UIManager.getColor("Menu.foreground");
 
-                scrollPane.getViewport().setBackground(lightBg);
+        if (currentTheme == 1) {
+            background = darkBg;
+            foreground = darkFg;
+            selection = darkSelectionColor;
+        } else if (currentTheme == 2) {
+            background = vintageBg;
+            foreground = vintageFg;
+            selection = vintageSelectionColor;
+            tabBackground = vintageTab;
+            tabForeground = vintageBg;
+        } else {
+            background = lightBg;
+            foreground = lightFg;
+            selection = lightSelectionColor;
+        }
+
+        textArea.setBackground(background);
+        textArea.setForeground(foreground);
+        textArea.setCaretColor(foreground);
+        textArea.setSelectionColor(selection);
+        scrollPane.getViewport().setBackground(background);
+        menuBar.setBackground(tabBackground);
+        menuBar.setOpaque(true);
+        for (Component component : menuBar.getComponents()) {
+            component.setBackground(tabBackground);
+            component.setForeground(tabForeground);
+            if (component instanceof JComponent) {
+                ((JComponent) component).setOpaque(true);
             }
-
         }
     }
 }
-
